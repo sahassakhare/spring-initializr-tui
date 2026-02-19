@@ -76,7 +76,7 @@ public class SpringInitializrTui extends ToolkitApp {
                 splashProgress = 1.0;
                 splashMessage = "";
 
-                Thread.sleep(3000);
+                Thread.sleep(1000);
 
                 currentScreen = Screen.MAIN;
             } catch (Exception e) {
