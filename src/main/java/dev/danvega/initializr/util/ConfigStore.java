@@ -12,11 +12,11 @@ import java.util.List;
 
 /**
  * Persists user preferences and recently used dependency combinations
- * to ~/.spring-initializr-tui/config.json.
+ * to ~/.spring-initializr/config.json.
  */
 public class ConfigStore {
 
-    private static final Path DEFAULT_CONFIG_DIR = Path.of(System.getProperty("user.home"), ".spring-initializr-tui");
+    private static final Path DEFAULT_CONFIG_DIR = Path.of(System.getProperty("user.home"), ".spring-initializr");
     static final int MAX_RECENT = 5;
 
     private final Path configDir;

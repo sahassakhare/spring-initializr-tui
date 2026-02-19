@@ -193,7 +193,7 @@ public class MainScreen {
         // Packaging and Java
         elements.add(renderSelectRow("Packaging", metadata.packaging(), config.getPackaging(), focusArea == FocusArea.PACKAGING));
         elements.add(renderSelectRow("Java", metadata.javaVersion(), config.getJavaVersion(), focusArea == FocusArea.JAVA_VERSION));
-        elements.add(renderSelectRow("App Format", appFormatField, config.getApplicationFormat(), focusArea == FocusArea.APPLICATION_FORMAT));
+        elements.add(renderSelectRow("Config", appFormatField, config.getApplicationFormat(), focusArea == FocusArea.APPLICATION_FORMAT));
 
         return panel("Configuration",
                 column(elements.toArray(Element[]::new))
