@@ -35,7 +35,7 @@ class DependencyPickerTest {
                         dep("jdbc", "Spring Data JDBC", "JDBC support")
                 ))
         );
-        picker = new DependencyPicker(categories, config);
+        picker = new DependencyPicker(categories, config, List.of());
     }
 
     private static InitializrMetadata.Dependency dep(String id, String name, String description) {

@@ -29,12 +29,14 @@ public class MainScreen {
     private boolean searchMode = false;
     private StringBuilder searchBuffer = new StringBuilder();
 
-    public MainScreen(InitializrMetadata.Metadata metadata, ProjectConfig config) {
+    public MainScreen(InitializrMetadata.Metadata metadata, ProjectConfig config,
+                      List<List<String>> recentDependencies) {
         this.metadata = metadata;
         this.config = config;
         this.dependencyPicker = new DependencyPicker(
                 metadata.dependencies() != null ? metadata.dependencies().values() : List.of(),
-                config
+                config,
+                recentDependencies
         );
         this.appFormatField = metadata.applicationFormat() != null
                 ? metadata.applicationFormat()
@@ -137,6 +139,10 @@ public class MainScreen {
 
     public void clearDependencies() {
         config.clearDependencies();
+    }
+
+    public void cycleCategory() {
+        dependencyPicker.cycleCategory();
     }
 
     private void cycleSelectField(InitializrMetadata.SelectField field, int direction,
@@ -268,7 +274,11 @@ public class MainScreen {
         // Dependency list
         elements.add(dependencyPicker.render());
 
-        return panel("Dependencies (" + config.getSelectedCount() + " selected)",
+        String depTitle = "Dependencies (" + config.getSelectedCount() + " selected)";
+        if (dependencyPicker.hasCategoryFilter()) {
+            depTitle += " \u2014 " + dependencyPicker.getActiveCategoryName();
+        }
+        return panel(depTitle,
                 column(elements.toArray(Element[]::new))
         ).rounded().borderColor(focusArea == FocusArea.DEPENDENCIES ? BRIGHT_GREEN : DIM_GRAY)
                 .fill()
@@ -293,6 +303,7 @@ public class MainScreen {
                 text("/").fg(Color.WHITE), text(":search  ").fg(DIM_GRAY),
                 text("Space").fg(Color.WHITE), text(":toggle  ").fg(DIM_GRAY),
                 text("\u2190\u2192").fg(Color.WHITE), text(":change  ").fg(DIM_GRAY),
+                text("c").fg(Color.WHITE), text(":filter  ").fg(DIM_GRAY),
                 text("x").fg(Color.WHITE), text(":clear  ").fg(DIM_GRAY),
                 text("?").fg(Color.WHITE), text(":help  ").fg(DIM_GRAY),
                 text("q").fg(Color.WHITE), text(":quit").fg(DIM_GRAY),

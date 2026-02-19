@@ -71,7 +71,7 @@ public class SpringInitializrTui extends ToolkitApp {
                 config.setPackaging(prefs.getLastPackaging());
                 config.setApplicationFormat(prefs.getLastApplicationFormat());
 
-                mainScreen = new MainScreen(metadata, config);
+                mainScreen = new MainScreen(metadata, config, prefs.recentDependencies());
 
                 splashProgress = 1.0;
                 splashMessage = "";
@@ -174,6 +174,12 @@ public class SpringInitializrTui extends ToolkitApp {
         // x — Clear all dependencies (when not in a text field)
         if (event.isChar('x') && !isTextFieldFocused()) {
             mainScreen.clearDependencies();
+            return EventResult.HANDLED;
+        }
+
+        // c — Cycle category filter (when not in a text field)
+        if (event.isChar('c') && !isTextFieldFocused()) {
+            mainScreen.cycleCategory();
             return EventResult.HANDLED;
         }
 
