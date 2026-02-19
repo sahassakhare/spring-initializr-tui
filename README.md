@@ -1,5 +1,7 @@
 # Spring Initializr TUI
 
+[![Release Native Binaries](https://github.com/danvega/spring-initializr-tui/actions/workflows/release.yml/badge.svg)](https://github.com/danvega/spring-initializr-tui/actions/workflows/release.yml)
+
 An interactive terminal UI for scaffolding Spring Boot projects, powered by the [start.spring.io](https://start.spring.io) API. Built with [TamboUI](https://tamboui.dev), a declarative Java TUI framework.
 
 ## Table of Contents
