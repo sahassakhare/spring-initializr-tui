@@ -11,20 +11,22 @@ public final class AppColors {
     private AppColors() {
     }
 
-    // Modern Enterprise Palette (Indigo & Graphite)
-    public static final Color BRAND_PRIMARY = Color.rgb(129, 140, 248); // Indigo 400
-    public static final Color BRAND_SECONDARY = Color.rgb(156, 163, 175); // Graphite 400
-    public static final Color BRAND_DIM = Color.rgb(75, 85, 99); // Graphite 600
-    public static final Color BRAND_SUCCESS = Color.rgb(20, 184, 166); // Professional Teal 500
-    public static final Color BRAND_HIGHLIGHT = Color.rgb(96, 165, 250); // Sky Blue 400
-    public static final Color BRAND_GOLD = Color.rgb(251, 191, 36); // Amber 400
+    // Professional Enterprise Palette (Custom Hex-based)
+    // Background: #0A1A3C, Surface: #143A75, Text: #BFD8FF, Success: #9ADBC6,
+    // Warning: #FFD66B
+    public static final Color BRAND_PRIMARY = Color.rgb(20, 58, 117); // Surface #143A75
+    public static final Color BRAND_SECONDARY = Color.rgb(191, 216, 255); // Text #BFD8FF (as secondary/labels)
+    public static final Color BRAND_DIM = Color.rgb(10, 26, 60); // Background #0A1A3C
+    public static final Color BRAND_SUCCESS = Color.rgb(154, 219, 198); // Soft Mint #9ADBC6
+    public static final Color BRAND_HIGHLIGHT = Color.rgb(255, 214, 107); // Ion Gold #FFD66B
+    public static final Color BRAND_GOLD = Color.rgb(255, 214, 107); // Ion Gold #FFD66B
 
     // Utility colors
-    public static final Color WHITE = Color.WHITE;
-    public static final Color YELLOW = Color.YELLOW;
-    public static final Color RED = Color.RED;
-    public static final Color CYAN = Color.CYAN;
-    public static final Color DIM_GRAY = Color.DARK_GRAY;
+    public static final Color WHITE = Color.rgb(191, 216, 255); // Soft blue-tinted white #BFD8FF
+    public static final Color YELLOW = Color.rgb(255, 214, 107); // #FFD66B
+    public static final Color RED = Color.RED; // Keeping standard red for errors
+    public static final Color CYAN = Color.rgb(191, 216, 255); // Map to Text color
+    public static final Color DIM_GRAY = Color.rgb(20, 58, 117); // Map to Surface color
 
-    public static final Color COMMENT_GRAY = Color.rgb(100, 100, 100);
+    public static final Color COMMENT_GRAY = Color.rgb(75, 85, 99); // Graphite-like for comments
 }
