@@ -18,7 +18,7 @@ import static dev.tamboui.toolkit.Toolkit.*;
 public class GenerateScreen {
 
     // private static final Color SPRING_GREEN = Color.rgb(109, 179, 63);
-    // private static final Color SUCCESS_TEAL = Color.rgb(40, 167, 69);
+    // private static final Color BRAND_SUCCESS = Color.rgb(40, 167, 69);
 
     public enum State {
         GENERATING, SUCCESS, ERROR
@@ -92,15 +92,15 @@ public class GenerateScreen {
                 column(
                         spacer(),
                         text("  " + statusMessage).fg(AppColors.WHITE),
-                        gauge(progress).fg(AppColors.MAVERICK_TEAL),
+                        gauge(progress).fg(AppColors.BRAND_PRIMARY),
                         spacer()))
-                .rounded().borderColor(AppColors.MAVERICK_TEAL).id("generate-panel");
+                .rounded().borderColor(AppColors.BRAND_PRIMARY).id("generate-panel");
     }
 
     private Element renderSuccess() {
         var elements = new ArrayList<Element>();
 
-        elements.add(text("  \u2713 Project Generated!").fg(AppColors.SUCCESS_TEAL).bold());
+        elements.add(text("  \u2713 Project Generated!").fg(AppColors.BRAND_SUCCESS).bold());
         elements.add(text(""));
         elements.add(text("  Extracted to: " + projectDir).fg(AppColors.WHITE));
         elements.add(text(""));
@@ -113,7 +113,7 @@ public class GenerateScreen {
                 String prefix = i == selectedIdeIndex ? "    \u25b8 " : "      ";
                 var line = text(prefix + ide.name());
                 if (i == selectedIdeIndex) {
-                    line = line.fg(AppColors.MAVERICK_TEAL).bold();
+                    line = line.fg(AppColors.BRAND_PRIMARY).bold();
                 } else {
                     line = line.fg(AppColors.WHITE);
                 }
@@ -130,12 +130,12 @@ public class GenerateScreen {
                 : "  [Enter] Open + run " + postGenerateCommand + "  ";
         elements.add(
                 row(
-                        text(openLabel).fg(AppColors.MAVERICK_TEAL),
+                        text(openLabel).fg(AppColors.BRAND_PRIMARY),
                         text("  [g] Generate Another  ").fg(AppColors.WHITE),
-                        text("  [q] Quit  ").fg(AppColors.DIM_GRAY)));
+                        text("  [q] Quit  ").fg(AppColors.BRAND_SECONDARY)));
 
         return panel("\u2713 Project Generated!",
-                column(elements.toArray(Element[]::new))).rounded().borderColor(AppColors.SUCCESS_TEAL)
+                column(elements.toArray(Element[]::new))).rounded().borderColor(AppColors.BRAND_SUCCESS)
                 .id("success-panel");
     }
 
@@ -144,7 +144,7 @@ public class GenerateScreen {
                 column(
                         text("  " + errorMessage).fg(AppColors.RED),
                         text(""),
-                        text("  Press [r] to retry or [q] to quit").fg(AppColors.DIM_GRAY)))
+                        text("  Press [r] to retry or [q] to quit").fg(AppColors.BRAND_SECONDARY)))
                 .rounded().borderColor(AppColors.RED).id("error-panel");
     }
 }

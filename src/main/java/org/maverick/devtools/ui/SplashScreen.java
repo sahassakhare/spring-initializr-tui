@@ -40,15 +40,15 @@ public class SplashScreen {
 
     public Element render() {
         Element[] bannerElements = Arrays.stream(BANNER_LINES)
-                .map(line -> text(line).fg(AppColors.MAVERICK_TEAL).bold().length(1))
+                .map(line -> text(line).fg(AppColors.BRAND_PRIMARY).bold().length(1))
                 .toArray(Element[]::new);
 
         return column(
                 spacer(),
                 column(bannerElements),
-                text(buildSubtitle()).fg(AppColors.DIM_TEAL).length(1),
+                text(buildSubtitle()).fg(AppColors.BRAND_DIM).length(1),
                 spacer(),
-                gauge(progress).fg(AppColors.MAVERICK_TEAL).label(statusMessage),
+                gauge(progress).fg(AppColors.BRAND_PRIMARY).label(statusMessage),
                 spacer()).id("splash");
     }
 }

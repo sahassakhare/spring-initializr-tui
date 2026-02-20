@@ -20,7 +20,7 @@ import static dev.tamboui.toolkit.Toolkit.*;
 public class ExploreScreen {
 
     // private static final Color SPRING_GREEN = Color.rgb(109, 179, 63);
-    // private static final Color CYAN = Color.CYAN;
+    // private static final Color BRAND_SECONDARY = Color.BRAND_SECONDARY;
     // private static final Color YELLOW = Color.YELLOW;
     // private static final Color COMMENT_GRAY = Color.rgb(100, 100, 100);
 
@@ -156,13 +156,13 @@ public class ExploreScreen {
 
         return column(
                 panel(title,
-                        contentArea).rounded().borderColor(AppColors.MAVERICK_TEAL),
+                        contentArea).rounded().borderColor(AppColors.BRAND_PRIMARY),
                 row(
-                        text("  " + scrollInfo + "  ").fg(AppColors.DIM_GRAY),
+                        text("  " + scrollInfo + "  ").fg(AppColors.BRAND_SECONDARY),
                         lineGauge((double) percent / 100.0)
-                                .fg(AppColors.MAVERICK_TEAL)
+                                .fg(AppColors.BRAND_PRIMARY)
                                 .fill(3),
-                        text("  " + percentStr + "  ").fg(AppColors.DIM_GRAY)).length(1));
+                        text("  " + percentStr + "  ").fg(AppColors.BRAND_SECONDARY)).length(1));
     }
 
     private enum FileType {
@@ -190,7 +190,7 @@ public class ExploreScreen {
         for (int i = scrollOffset; i < end; i++) {
             String lineNum = String.format("%4d ", i + 1);
             var parts = new ArrayList<Element>();
-            parts.add(text(lineNum).fg(AppColors.DIM_GRAY));
+            parts.add(text(lineNum).fg(AppColors.BRAND_SECONDARY));
             switch (fileType) {
                 case XML -> addXmlParts(lines[i], parts);
                 case GRADLE -> addGradleParts(lines[i], parts);
@@ -226,7 +226,7 @@ public class ExploreScreen {
             if (tagMatcher.start() > lastEnd) {
                 parts.add(text(trimmed.substring(lastEnd, tagMatcher.start())).fg(AppColors.WHITE));
             }
-            parts.add(text(tagMatcher.group(1)).fg(AppColors.MAVERICK_TEAL));
+            parts.add(text(tagMatcher.group(1)).fg(AppColors.BRAND_PRIMARY));
 
             String attrPart = tagMatcher.group(2);
             if (!attrPart.isEmpty()) {
@@ -236,7 +236,7 @@ public class ExploreScreen {
                     if (attrMatcher.start() > attrLastEnd) {
                         parts.add(text(attrPart.substring(attrLastEnd, attrMatcher.start())));
                     }
-                    parts.add(text(attrMatcher.group(1)).fg(AppColors.CYAN));
+                    parts.add(text(attrMatcher.group(1)).fg(AppColors.BRAND_SECONDARY));
                     parts.add(text("="));
                     parts.add(text(attrMatcher.group(2)).fg(AppColors.YELLOW));
                     attrLastEnd = attrMatcher.end();
@@ -246,7 +246,7 @@ public class ExploreScreen {
                 }
             }
 
-            parts.add(text(tagMatcher.group(3)).fg(AppColors.MAVERICK_TEAL));
+            parts.add(text(tagMatcher.group(3)).fg(AppColors.BRAND_PRIMARY));
             lastEnd = tagMatcher.end();
         }
 
@@ -304,7 +304,7 @@ public class ExploreScreen {
                 }
                 String word = trimmed.substring(i, end);
                 if (GRADLE_KEYWORDS.contains(word)) {
-                    parts.add(text(word).fg(AppColors.MAVERICK_TEAL));
+                    parts.add(text(word).fg(AppColors.BRAND_PRIMARY));
                 } else {
                     parts.add(text(word).fg(AppColors.WHITE));
                 }
@@ -341,7 +341,7 @@ public class ExploreScreen {
                     && (Character.isLetterOrDigit(trimmed.charAt(end)) || trimmed.charAt(end) == '@')) {
                 end++;
             }
-            parts.add(text(trimmed.substring(0, end)).fg(AppColors.CYAN));
+            parts.add(text(trimmed.substring(0, end)).fg(AppColors.BRAND_SECONDARY));
             if (end < trimmed.length()) {
                 parts.add(text(trimmed.substring(end)).fg(AppColors.WHITE));
             }
@@ -375,7 +375,7 @@ public class ExploreScreen {
                 }
                 String word = trimmed.substring(i, end);
                 if (JAVA_KEYWORDS.contains(word)) {
-                    parts.add(text(word).fg(AppColors.MAVERICK_TEAL));
+                    parts.add(text(word).fg(AppColors.BRAND_PRIMARY));
                 } else {
                     parts.add(text(word).fg(AppColors.WHITE));
                 }
@@ -403,13 +403,13 @@ public class ExploreScreen {
 
         int eq = trimmed.indexOf('=');
         if (eq > 0) {
-            parts.add(text(trimmed.substring(0, eq)).fg(AppColors.CYAN));
+            parts.add(text(trimmed.substring(0, eq)).fg(AppColors.BRAND_SECONDARY));
             parts.add(text("=").fg(AppColors.WHITE));
             parts.add(text(trimmed.substring(eq + 1)).fg(AppColors.YELLOW));
         } else {
             int colon = trimmed.indexOf(':');
             if (colon > 0 && !trimmed.startsWith("---")) {
-                parts.add(text(trimmed.substring(0, colon)).fg(AppColors.CYAN));
+                parts.add(text(trimmed.substring(0, colon)).fg(AppColors.BRAND_SECONDARY));
                 parts.add(text(":").fg(AppColors.WHITE));
                 parts.add(text(trimmed.substring(colon + 1)).fg(AppColors.YELLOW));
             } else {

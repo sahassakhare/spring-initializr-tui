@@ -17,8 +17,8 @@ import static dev.tamboui.toolkit.Toolkit.*;
 public class DependencyPicker {
 
     // private static final Color SPRING_GREEN = Color.rgb(109, 179, 63);
-    // private static final Color DIM_GRAY = Color.DARK_GRAY;
-    // private static final Color RECENT_GOLD = Color.rgb(255, 200, 60);
+    // private static final Color BRAND_SECONDARY = Color.DARK_GRAY;
+    // private static final Color BRAND_GOLD = Color.rgb(255, 200, 60);
 
     private final List<InitializrMetadata.DependencyCategory> categories;
     private final ProjectConfig config;
@@ -292,10 +292,10 @@ public class DependencyPicker {
         if (!selected.isEmpty()) {
             elements.add(
                     text("  Selected: " + String.join(", ", selected) + "  (" + selected.size() + ")")
-                            .fg(AppColors.MAVERICK_TEAL).bold());
+                            .fg(AppColors.BRAND_PRIMARY).bold());
         } else {
             elements.add(
-                    text("  Search or browse to add dependencies").fg(AppColors.DIM_GRAY).italic());
+                    text("  Search or browse to add dependencies").fg(AppColors.BRAND_SECONDARY).italic());
         }
 
         // Dependency list
@@ -310,7 +310,7 @@ public class DependencyPicker {
                 boolean isRecent = item.categoryName().startsWith("\u2605");
                 elements.add(
                         text("  > " + item.categoryName())
-                                .fg(isRecent ? AppColors.RECENT_GOLD : AppColors.CYAN).bold());
+                                .fg(isRecent ? AppColors.BRAND_GOLD : AppColors.BRAND_SECONDARY).bold());
             } else {
                 var dep = item.dependency();
                 boolean isSelected = config.isDependencySelected(dep.id());
@@ -329,7 +329,7 @@ public class DependencyPicker {
                     if (isCursor) {
                         line = line.fg(AppColors.WHITE).bold();
                     } else if (isSelected) {
-                        line = line.fg(AppColors.MAVERICK_TEAL);
+                        line = line.fg(AppColors.BRAND_PRIMARY);
                     } else {
                         line = line.fg(AppColors.WHITE);
                     }
@@ -339,7 +339,7 @@ public class DependencyPicker {
         }
 
         if (flatItems.isEmpty()) {
-            elements.add(text("  No dependencies match your search").fg(AppColors.DIM_GRAY).italic());
+            elements.add(text("  No dependencies match your search").fg(AppColors.BRAND_SECONDARY).italic());
         }
 
         return column(elements.toArray(Element[]::new));
@@ -350,7 +350,7 @@ public class DependencyPicker {
         // Build the name with highlighted chars using row of text segments
         var parts = new ArrayList<Element>();
         String beforeName = prefix + checkmark;
-        Color baseColor = isCursor ? AppColors.WHITE : (isSelected ? AppColors.MAVERICK_TEAL : AppColors.WHITE);
+        Color baseColor = isCursor ? AppColors.WHITE : (isSelected ? AppColors.BRAND_PRIMARY : AppColors.WHITE);
 
         var prefixEl = text(beforeName).fg(baseColor);
         if (isCursor)
@@ -376,7 +376,7 @@ public class DependencyPicker {
                 // Flush segment
                 var segment = text(sb.toString());
                 if (currentHighlight) {
-                    segment = segment.fg(AppColors.MAVERICK_TEAL).bold();
+                    segment = segment.fg(AppColors.BRAND_PRIMARY).bold();
                 } else {
                     segment = segment.fg(baseColor);
                     if (isCursor)
@@ -392,7 +392,7 @@ public class DependencyPicker {
         if (!sb.isEmpty()) {
             var segment = text(sb.toString());
             if (currentHighlight) {
-                segment = segment.fg(AppColors.MAVERICK_TEAL).bold();
+                segment = segment.fg(AppColors.BRAND_PRIMARY).bold();
             } else {
                 segment = segment.fg(baseColor);
                 if (isCursor)

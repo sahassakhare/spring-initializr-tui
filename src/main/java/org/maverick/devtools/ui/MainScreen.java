@@ -17,8 +17,8 @@ import static dev.tamboui.toolkit.Toolkit.*;
 public class MainScreen {
 
     // private static final Color SPRING_GREEN = Color.rgb(109, 179, 63);
-    // private static final Color BRIGHT_TEAL = Color.rgb(143, 213, 96);
-    // private static final Color DIM_GRAY = Color.DARK_GRAY;
+    // private static final Color BRAND_PRIMARY = Color.rgb(143, 213, 96);
+    // private static final Color BRAND_SECONDARY = Color.DARK_GRAY;
 
     public enum FocusArea {
         PROJECT_TYPE, LANGUAGE, BOOT_VERSION, GROUP, ARTIFACT, NAME, DESCRIPTION, PACKAGING, JAVA_VERSION,
@@ -212,10 +212,10 @@ public class MainScreen {
     private Element renderHeader() {
         return panel("",
                 row(
-                        text("  MAVERICK DEVTOOLS").fg(AppColors.MAVERICK_TEAL).bold(),
+                        text("  MAVERICK DEVTOOLS").fg(AppColors.BRAND_PRIMARY).bold(),
                         spacer(),
-                        text("v" + appVersion() + "  ").fg(AppColors.DIM_GRAY)))
-                .rounded().borderColor(AppColors.MAVERICK_TEAL).length(3).id("header");
+                        text("v" + appVersion() + "  ").fg(AppColors.BRAND_SECONDARY)))
+                .rounded().borderColor(AppColors.BRAND_PRIMARY).length(3).id("header");
     }
 
     private Element renderConfigForm() {
@@ -252,7 +252,7 @@ public class MainScreen {
 
         return panel("Configuration",
                 column(elements.toArray(Element[]::new))).rounded()
-                .borderColor(focusArea != FocusArea.DEPENDENCIES ? AppColors.BRIGHT_TEAL : AppColors.DIM_GRAY)
+                .borderColor(focusArea != FocusArea.DEPENDENCIES ? AppColors.BRAND_PRIMARY : AppColors.BRAND_SECONDARY)
                 .id("config-form");
     }
 
@@ -260,7 +260,7 @@ public class MainScreen {
             boolean focused) {
         var parts = new ArrayList<Element>();
         String paddedLabel = String.format("  %-12s", label);
-        parts.add(text(paddedLabel).fg(focused ? AppColors.WHITE : AppColors.DIM_GRAY).bold());
+        parts.add(text(paddedLabel).fg(focused ? AppColors.WHITE : AppColors.BRAND_SECONDARY).bold());
 
         if (field != null) {
             for (var option : field.values()) {
@@ -268,11 +268,11 @@ public class MainScreen {
                 String marker = selected ? "\u25cf " : "\u25cb ";
                 var optText = text(marker + displayName(option) + "  ");
                 if (selected && focused) {
-                    optText = optText.fg(AppColors.MAVERICK_TEAL).bold();
+                    optText = optText.fg(AppColors.BRAND_PRIMARY).bold();
                 } else if (selected) {
-                    optText = optText.fg(AppColors.MAVERICK_TEAL);
+                    optText = optText.fg(AppColors.BRAND_PRIMARY);
                 } else {
-                    optText = optText.fg(AppColors.DIM_GRAY);
+                    optText = optText.fg(AppColors.BRAND_SECONDARY);
                 }
                 parts.add(optText);
             }
@@ -280,7 +280,7 @@ public class MainScreen {
 
         if (focused) {
             parts.add(spacer());
-            parts.add(text("\u25c0 \u25b6 ").fg(AppColors.DIM_GRAY));
+            parts.add(text("\u25c0 \u25b6 ").fg(AppColors.BRAND_SECONDARY));
         }
 
         return row(parts.toArray(Element[]::new));
@@ -291,8 +291,8 @@ public class MainScreen {
         String displayValue = focused ? "[ " + value + "_ ]" : "[ " + value + " ]";
 
         return row(
-                text(paddedLabel).fg(focused ? AppColors.WHITE : AppColors.DIM_GRAY).bold(),
-                text(displayValue).fg(focused ? AppColors.MAVERICK_TEAL : AppColors.WHITE));
+                text(paddedLabel).fg(focused ? AppColors.WHITE : AppColors.BRAND_SECONDARY).bold(),
+                text(displayValue).fg(focused ? AppColors.BRAND_PRIMARY : AppColors.WHITE));
     }
 
     private Element renderDependencyPanel() {
@@ -303,13 +303,13 @@ public class MainScreen {
             elements.add(
                     row(
                             text("  Search: ").fg(AppColors.WHITE).bold(),
-                            text("[ " + searchBuffer + "_ ]").fg(AppColors.MAVERICK_TEAL)));
+                            text("[ " + searchBuffer + "_ ]").fg(AppColors.BRAND_PRIMARY)));
         } else if (config.getSelectedCount() > 0) {
             elements.add(
-                    text("  Press / to search, x to clear all").fg(AppColors.DIM_GRAY).italic());
+                    text("  Press / to search, x to clear all").fg(AppColors.BRAND_SECONDARY).italic());
         } else {
             elements.add(
-                    text("  Press / to search dependencies").fg(AppColors.DIM_GRAY).italic());
+                    text("  Press / to search dependencies").fg(AppColors.BRAND_SECONDARY).italic());
         }
         elements.add(text(""));
 
@@ -322,7 +322,7 @@ public class MainScreen {
         }
         return panel(depTitle,
                 column(elements.toArray(Element[]::new))).rounded()
-                .borderColor(focusArea == FocusArea.DEPENDENCIES ? AppColors.BRIGHT_TEAL : AppColors.DIM_GRAY)
+                .borderColor(focusArea == FocusArea.DEPENDENCIES ? AppColors.BRAND_PRIMARY : AppColors.BRAND_SECONDARY)
                 .fill()
                 .id("dep-picker");
     }
@@ -330,24 +330,24 @@ public class MainScreen {
     private Element renderActionBar() {
         return row(
                 text("  "),
-                text("[ Generate g ]").fg(AppColors.MAVERICK_TEAL).bold(),
+                text("[ Generate g ]").fg(AppColors.BRAND_PRIMARY).bold(),
                 text("  "),
-                text("[ Explore e ]").fg(AppColors.CYAN),
+                text("[ Explore e ]").fg(AppColors.BRAND_SECONDARY),
                 text("  "),
-                text("[ Quit q ]").fg(AppColors.DIM_GRAY),
+                text("[ Quit q ]").fg(AppColors.BRAND_SECONDARY),
                 spacer()).length(1);
     }
 
     private Element renderFooter() {
         return row(
-                text("  Tab").fg(AppColors.WHITE), text(":navigate  ").fg(AppColors.DIM_GRAY),
-                text("/").fg(AppColors.WHITE), text(":search  ").fg(AppColors.DIM_GRAY),
-                text("Space").fg(AppColors.WHITE), text(":toggle  ").fg(AppColors.DIM_GRAY),
-                text("\u2190\u2192").fg(AppColors.WHITE), text(":change  ").fg(AppColors.DIM_GRAY),
-                text("c").fg(AppColors.WHITE), text(":filter  ").fg(AppColors.DIM_GRAY),
-                text("x").fg(AppColors.WHITE), text(":clear  ").fg(AppColors.DIM_GRAY),
-                text("?").fg(AppColors.WHITE), text(":help  ").fg(AppColors.DIM_GRAY),
-                text("q").fg(AppColors.WHITE), text(":quit").fg(AppColors.DIM_GRAY),
+                text("  Tab").fg(AppColors.WHITE), text(":navigate  ").fg(AppColors.BRAND_SECONDARY),
+                text("/").fg(AppColors.WHITE), text(":search  ").fg(AppColors.BRAND_SECONDARY),
+                text("Space").fg(AppColors.WHITE), text(":toggle  ").fg(AppColors.BRAND_SECONDARY),
+                text("\u2190\u2192").fg(AppColors.WHITE), text(":change  ").fg(AppColors.BRAND_SECONDARY),
+                text("c").fg(AppColors.WHITE), text(":filter  ").fg(AppColors.BRAND_SECONDARY),
+                text("x").fg(AppColors.WHITE), text(":clear  ").fg(AppColors.BRAND_SECONDARY),
+                text("?").fg(AppColors.WHITE), text(":help  ").fg(AppColors.BRAND_SECONDARY),
+                text("q").fg(AppColors.WHITE), text(":quit").fg(AppColors.BRAND_SECONDARY),
                 spacer()).length(1);
     }
 

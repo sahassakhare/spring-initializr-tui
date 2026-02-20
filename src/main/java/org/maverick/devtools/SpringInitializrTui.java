@@ -96,9 +96,9 @@ public class SpringInitializrTui extends ToolkitApp {
     protected Element render() {
         Element content = switch (currentScreen) {
             case SPLASH -> new SplashScreen(splashProgress, splashMessage).render();
-            case MAIN -> mainScreen != null ? mainScreen.render() : text("Loading...").fg(AppColors.MAVERICK_TEAL);
+            case MAIN -> mainScreen != null ? mainScreen.render() : text("Loading...").fg(AppColors.BRAND_PRIMARY);
             case EXPLORE ->
-                exploreScreen != null ? renderExploreScreen() : text("Loading...").fg(AppColors.MAVERICK_TEAL);
+                exploreScreen != null ? renderExploreScreen() : text("Loading...").fg(AppColors.BRAND_PRIMARY);
             case GENERATE -> generateScreen.render();
             case HELP -> helpScreen.render();
         };
@@ -607,11 +607,11 @@ public class SpringInitializrTui extends ToolkitApp {
         return column(
                 panel("",
                         row(
-                                text("  MAVERICK DEVTOOLS").fg(AppColors.MAVERICK_TEAL).bold(),
+                                text("  MAVERICK DEVTOOLS").fg(AppColors.BRAND_PRIMARY).bold(),
                                 spacer(),
-                                text("Explore  ").fg(AppColors.CYAN)))
-                        .rounded().borderColor(AppColors.MAVERICK_TEAL).length(3),
-                row(text(summary).fg(AppColors.DIM_GRAY)).length(1),
+                                text("Explore  ").fg(AppColors.BRAND_SECONDARY)))
+                        .rounded().borderColor(AppColors.BRAND_PRIMARY).length(3),
+                row(text(summary).fg(AppColors.BRAND_SECONDARY)).length(1),
                 exploreScreen.render(26),
                 row(
                         text("  "),
