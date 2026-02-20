@@ -13,9 +13,9 @@
     <description>Interactive terminal client for start.spring.io built with TamboUI</description>
 
     <properties>
-        <maven.compiler.source>25</maven.compiler.source>
-        <maven.compiler.target>25</maven.compiler.target>
-        <maven.compiler.release>25</maven.compiler.release>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.release>21</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <tamboui.version>0.2.0-SNAPSHOT</tamboui.version>
         <jackson.version>3.0.4</jackson.version>
@@ -73,7 +73,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.13.0</version>
                 <configuration>
-                    <release>25</release>
+                    <release>21</release>
                     <compilerArgs>
                         <arg>--enable-preview</arg>
                     </compilerArgs>
@@ -115,9 +115,9 @@
         <profile>
             <id>native</id>
             <properties>
-                <maven.compiler.source>25</maven.compiler.source>
-                <maven.compiler.target>25</maven.compiler.target>
-                <maven.compiler.release>25</maven.compiler.release>
+                <maven.compiler.source>21</maven.compiler.source>
+                <maven.compiler.target>21</maven.compiler.target>
+                <maven.compiler.release>21</maven.compiler.release>
             </properties>
             <build>
                 <plugins>
@@ -126,7 +126,7 @@
                         <artifactId>maven-compiler-plugin</artifactId>
                         <version>3.13.0</version>
                         <configuration>
-                            <release>25</release>
+                            <release>21</release>
                             <compilerArgs>
                                 <arg>--enable-preview</arg>
                             </compilerArgs>
