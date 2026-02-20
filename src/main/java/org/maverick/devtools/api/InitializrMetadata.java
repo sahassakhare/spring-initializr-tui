@@ -37,9 +37,7 @@ public final class InitializrMetadata {
                         @JsonProperty("default") String defaultValue,
                         @JsonProperty("values") List<SelectOption> values) {
                 public String defaultOrFirst() {
-                        if (defaultValue != null)
-                                return defaultValue;
-                        return values.isEmpty() ? "" : values.getFirst().id();
+                        return values.isEmpty() ? null : values.get(0).id();
                 }
         }
 

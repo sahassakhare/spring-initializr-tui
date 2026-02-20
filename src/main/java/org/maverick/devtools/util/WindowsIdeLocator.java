@@ -70,7 +70,7 @@ public final class WindowsIdeLocator implements OsIdeLocator {
                         ides.add(new DetectedIde(name, "idea", exe));
                     }
                 }
-            } catch (IOException _) {
+            } catch (IOException e) {
             }
         }
     }
@@ -96,7 +96,7 @@ public final class WindowsIdeLocator implements OsIdeLocator {
             } finally {
                 process.destroy();
             }
-        } catch (IOException | InterruptedException _) {
+        } catch (IOException | InterruptedException e) {
         }
     }
 }

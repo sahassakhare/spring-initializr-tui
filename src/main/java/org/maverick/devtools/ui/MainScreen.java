@@ -17,7 +17,7 @@ import static dev.tamboui.toolkit.Toolkit.*;
 public class MainScreen {
 
     // private static final Color SPRING_GREEN = Color.rgb(109, 179, 63);
-    // private static final Color BRIGHT_GREEN = Color.rgb(143, 213, 96);
+    // private static final Color BRIGHT_TEAL = Color.rgb(143, 213, 96);
     // private static final Color DIM_GRAY = Color.DARK_GRAY;
 
     public enum FocusArea {
@@ -212,10 +212,10 @@ public class MainScreen {
     private Element renderHeader() {
         return panel("",
                 row(
-                        text("  MAVERICK DEVTOOLS").fg(AppColors.MAVERICK_GREEN).bold(),
+                        text("  MAVERICK DEVTOOLS").fg(AppColors.MAVERICK_TEAL).bold(),
                         spacer(),
                         text("v" + appVersion() + "  ").fg(AppColors.DIM_GRAY)))
-                .rounded().borderColor(AppColors.MAVERICK_GREEN).length(3).id("header");
+                .rounded().borderColor(AppColors.MAVERICK_TEAL).length(3).id("header");
     }
 
     private Element renderConfigForm() {
@@ -252,7 +252,7 @@ public class MainScreen {
 
         return panel("Configuration",
                 column(elements.toArray(Element[]::new))).rounded()
-                .borderColor(focusArea != FocusArea.DEPENDENCIES ? AppColors.BRIGHT_GREEN : AppColors.DIM_GRAY)
+                .borderColor(focusArea != FocusArea.DEPENDENCIES ? AppColors.BRIGHT_TEAL : AppColors.DIM_GRAY)
                 .id("config-form");
     }
 
@@ -268,9 +268,9 @@ public class MainScreen {
                 String marker = selected ? "\u25cf " : "\u25cb ";
                 var optText = text(marker + displayName(option) + "  ");
                 if (selected && focused) {
-                    optText = optText.fg(AppColors.MAVERICK_GREEN).bold();
+                    optText = optText.fg(AppColors.MAVERICK_TEAL).bold();
                 } else if (selected) {
-                    optText = optText.fg(AppColors.MAVERICK_GREEN);
+                    optText = optText.fg(AppColors.MAVERICK_TEAL);
                 } else {
                     optText = optText.fg(AppColors.DIM_GRAY);
                 }
@@ -292,7 +292,7 @@ public class MainScreen {
 
         return row(
                 text(paddedLabel).fg(focused ? AppColors.WHITE : AppColors.DIM_GRAY).bold(),
-                text(displayValue).fg(focused ? AppColors.MAVERICK_GREEN : AppColors.WHITE));
+                text(displayValue).fg(focused ? AppColors.MAVERICK_TEAL : AppColors.WHITE));
     }
 
     private Element renderDependencyPanel() {
@@ -303,7 +303,7 @@ public class MainScreen {
             elements.add(
                     row(
                             text("  Search: ").fg(AppColors.WHITE).bold(),
-                            text("[ " + searchBuffer + "_ ]").fg(AppColors.MAVERICK_GREEN)));
+                            text("[ " + searchBuffer + "_ ]").fg(AppColors.MAVERICK_TEAL)));
         } else if (config.getSelectedCount() > 0) {
             elements.add(
                     text("  Press / to search, x to clear all").fg(AppColors.DIM_GRAY).italic());
@@ -322,7 +322,7 @@ public class MainScreen {
         }
         return panel(depTitle,
                 column(elements.toArray(Element[]::new))).rounded()
-                .borderColor(focusArea == FocusArea.DEPENDENCIES ? AppColors.BRIGHT_GREEN : AppColors.DIM_GRAY)
+                .borderColor(focusArea == FocusArea.DEPENDENCIES ? AppColors.BRIGHT_TEAL : AppColors.DIM_GRAY)
                 .fill()
                 .id("dep-picker");
     }
@@ -330,7 +330,7 @@ public class MainScreen {
     private Element renderActionBar() {
         return row(
                 text("  "),
-                text("[ Generate g ]").fg(AppColors.MAVERICK_GREEN).bold(),
+                text("[ Generate g ]").fg(AppColors.MAVERICK_TEAL).bold(),
                 text("  "),
                 text("[ Explore e ]").fg(AppColors.CYAN),
                 text("  "),

@@ -63,7 +63,7 @@ public class DependencyPicker {
         rebuildFlatList();
         cursorIndex = 0;
         // Skip category header if first item is one
-        if (!flatItems.isEmpty() && flatItems.getFirst().isCategory()) {
+        if (!flatItems.isEmpty() && flatItems.get(0).isCategory()) {
             cursorIndex = flatItems.size() > 1 ? 1 : 0;
         }
     }
@@ -112,7 +112,7 @@ public class DependencyPicker {
         }
         rebuildFlatList();
         cursorIndex = 0;
-        if (!flatItems.isEmpty() && flatItems.getFirst().isCategory()) {
+        if (!flatItems.isEmpty() && flatItems.get(0).isCategory()) {
             cursorIndex = flatItems.size() > 1 ? 1 : 0;
         }
     }
@@ -292,7 +292,7 @@ public class DependencyPicker {
         if (!selected.isEmpty()) {
             elements.add(
                     text("  Selected: " + String.join(", ", selected) + "  (" + selected.size() + ")")
-                            .fg(AppColors.MAVERICK_GREEN).bold());
+                            .fg(AppColors.MAVERICK_TEAL).bold());
         } else {
             elements.add(
                     text("  Search or browse to add dependencies").fg(AppColors.DIM_GRAY).italic());
@@ -329,7 +329,7 @@ public class DependencyPicker {
                     if (isCursor) {
                         line = line.fg(AppColors.WHITE).bold();
                     } else if (isSelected) {
-                        line = line.fg(AppColors.MAVERICK_GREEN);
+                        line = line.fg(AppColors.MAVERICK_TEAL);
                     } else {
                         line = line.fg(AppColors.WHITE);
                     }
@@ -350,7 +350,7 @@ public class DependencyPicker {
         // Build the name with highlighted chars using row of text segments
         var parts = new ArrayList<Element>();
         String beforeName = prefix + checkmark;
-        Color baseColor = isCursor ? AppColors.WHITE : (isSelected ? AppColors.MAVERICK_GREEN : AppColors.WHITE);
+        Color baseColor = isCursor ? AppColors.WHITE : (isSelected ? AppColors.MAVERICK_TEAL : AppColors.WHITE);
 
         var prefixEl = text(beforeName).fg(baseColor);
         if (isCursor)
@@ -376,7 +376,7 @@ public class DependencyPicker {
                 // Flush segment
                 var segment = text(sb.toString());
                 if (currentHighlight) {
-                    segment = segment.fg(AppColors.MAVERICK_GREEN).bold();
+                    segment = segment.fg(AppColors.MAVERICK_TEAL).bold();
                 } else {
                     segment = segment.fg(baseColor);
                     if (isCursor)
@@ -392,7 +392,7 @@ public class DependencyPicker {
         if (!sb.isEmpty()) {
             var segment = text(sb.toString());
             if (currentHighlight) {
-                segment = segment.fg(AppColors.MAVERICK_GREEN).bold();
+                segment = segment.fg(AppColors.MAVERICK_TEAL).bold();
             } else {
                 segment = segment.fg(baseColor);
                 if (isCursor)

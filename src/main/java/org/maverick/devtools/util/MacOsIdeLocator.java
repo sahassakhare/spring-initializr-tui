@@ -68,7 +68,7 @@ public final class MacOsIdeLocator implements OsIdeLocator {
             } finally {
                 process.destroy();
             }
-        } catch (IOException | InterruptedException _) {
+        } catch (IOException | InterruptedException e) {
         }
     }
 }

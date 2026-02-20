@@ -13,7 +13,7 @@ public class HelpScreen {
         public Element render() {
                 return panel("Maverick DevTools Help",
                                 column(
-                                                text("  Navigation").fg(AppColors.MAVERICK_GREEN).bold(),
+                                                text("  Navigation").fg(AppColors.MAVERICK_TEAL).bold(),
                                                 row(text("    Tab / Shift-Tab    ").fg(AppColors.WHITE),
                                                                 text("Navigate between fields").fg(AppColors.DIM_GRAY)),
                                                 row(text("    Arrow Keys         ").fg(AppColors.WHITE),
@@ -22,7 +22,7 @@ public class HelpScreen {
                                                 row(text("    Enter              ").fg(AppColors.WHITE),
                                                                 text("Confirm selection").fg(AppColors.DIM_GRAY)),
                                                 text(""),
-                                                text("  Shortcuts").fg(AppColors.MAVERICK_GREEN).bold(),
+                                                text("  Shortcuts").fg(AppColors.MAVERICK_TEAL).bold(),
                                                 row(text("    /                  ").fg(AppColors.WHITE),
                                                                 text("Enter dependency search mode")
                                                                                 .fg(AppColors.DIM_GRAY)),
@@ -46,6 +46,6 @@ public class HelpScreen {
                                                                 text("Quit application").fg(AppColors.DIM_GRAY)),
                                                 spacer(),
                                                 text("  Press any key to return").fg(AppColors.DIM_GRAY).italic()))
-                                .rounded().borderColor(AppColors.MAVERICK_GREEN).id("help-panel");
+                                .rounded().borderColor(AppColors.MAVERICK_TEAL).id("help-panel");
         }
 }

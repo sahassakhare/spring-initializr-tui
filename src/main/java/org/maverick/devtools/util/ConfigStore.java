@@ -59,9 +59,9 @@ public class ConfigStore {
         if (deps.isEmpty())
             return;
         prefs.recentDependencies().removeIf(r -> r.equals(deps));
-        prefs.recentDependencies().addFirst(new ArrayList<>(deps));
+        prefs.recentDependencies().add(0, new ArrayList<>(deps));
         while (prefs.recentDependencies().size() > MAX_RECENT) {
-            prefs.recentDependencies().removeLast();
+            prefs.recentDependencies().remove(prefs.recentDependencies().size() - 1);
         }
     }
 

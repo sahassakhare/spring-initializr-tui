@@ -156,11 +156,11 @@ public class ExploreScreen {
 
         return column(
                 panel(title,
-                        contentArea).rounded().borderColor(AppColors.MAVERICK_GREEN),
+                        contentArea).rounded().borderColor(AppColors.MAVERICK_TEAL),
                 row(
                         text("  " + scrollInfo + "  ").fg(AppColors.DIM_GRAY),
                         lineGauge((double) percent / 100.0)
-                                .fg(AppColors.MAVERICK_GREEN)
+                                .fg(AppColors.MAVERICK_TEAL)
                                 .fill(3),
                         text("  " + percentStr + "  ").fg(AppColors.DIM_GRAY)).length(1));
     }
@@ -226,7 +226,7 @@ public class ExploreScreen {
             if (tagMatcher.start() > lastEnd) {
                 parts.add(text(trimmed.substring(lastEnd, tagMatcher.start())).fg(AppColors.WHITE));
             }
-            parts.add(text(tagMatcher.group(1)).fg(AppColors.MAVERICK_GREEN));
+            parts.add(text(tagMatcher.group(1)).fg(AppColors.MAVERICK_TEAL));
 
             String attrPart = tagMatcher.group(2);
             if (!attrPart.isEmpty()) {
@@ -246,7 +246,7 @@ public class ExploreScreen {
                 }
             }
 
-            parts.add(text(tagMatcher.group(3)).fg(AppColors.MAVERICK_GREEN));
+            parts.add(text(tagMatcher.group(3)).fg(AppColors.MAVERICK_TEAL));
             lastEnd = tagMatcher.end();
         }
 
@@ -304,7 +304,7 @@ public class ExploreScreen {
                 }
                 String word = trimmed.substring(i, end);
                 if (GRADLE_KEYWORDS.contains(word)) {
-                    parts.add(text(word).fg(AppColors.MAVERICK_GREEN));
+                    parts.add(text(word).fg(AppColors.MAVERICK_TEAL));
                 } else {
                     parts.add(text(word).fg(AppColors.WHITE));
                 }
@@ -375,7 +375,7 @@ public class ExploreScreen {
                 }
                 String word = trimmed.substring(i, end);
                 if (JAVA_KEYWORDS.contains(word)) {
-                    parts.add(text(word).fg(AppColors.MAVERICK_GREEN));
+                    parts.add(text(word).fg(AppColors.MAVERICK_TEAL));
                 } else {
                     parts.add(text(word).fg(AppColors.WHITE));
                 }
