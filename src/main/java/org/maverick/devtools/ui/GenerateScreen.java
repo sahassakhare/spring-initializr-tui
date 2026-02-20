@@ -1,6 +1,7 @@
-package dev.danvega.initializr.ui;
+package org.maverick.devtools.ui;
 
-import dev.danvega.initializr.util.IdeLauncher;
+import org.maverick.devtools.util.AppColors;
+import org.maverick.devtools.util.IdeLauncher;
 import dev.tamboui.style.Color;
 import dev.tamboui.toolkit.element.Element;
 
@@ -11,14 +12,17 @@ import java.util.List;
 import static dev.tamboui.toolkit.Toolkit.*;
 
 /**
- * Post-generation screen showing project info, directory tree, and IDE selection.
+ * Post-generation screen showing project info, directory tree, and IDE
+ * selection.
  */
 public class GenerateScreen {
 
-    private static final Color SPRING_GREEN = Color.rgb(109, 179, 63);
-    private static final Color SUCCESS_GREEN = Color.rgb(40, 167, 69);
+    // private static final Color SPRING_GREEN = Color.rgb(109, 179, 63);
+    // private static final Color SUCCESS_GREEN = Color.rgb(40, 167, 69);
 
-    public enum State { GENERATING, SUCCESS, ERROR }
+    public enum State {
+        GENERATING, SUCCESS, ERROR
+    }
 
     private State state = State.GENERATING;
     private double progress = 0.0;
@@ -47,22 +51,29 @@ public class GenerateScreen {
         this.errorMessage = message;
     }
 
-    public State getState() { return state; }
+    public State getState() {
+        return state;
+    }
 
     public void moveIdeUp() {
-        if (selectedIdeIndex > 0) selectedIdeIndex--;
+        if (selectedIdeIndex > 0)
+            selectedIdeIndex--;
     }
 
     public void moveIdeDown() {
-        if (selectedIdeIndex < detectedIdes.size() - 1) selectedIdeIndex++;
+        if (selectedIdeIndex < detectedIdes.size() - 1)
+            selectedIdeIndex++;
     }
 
     public IdeLauncher.DetectedIde getSelectedIde() {
-        if (detectedIdes.isEmpty()) return null;
+        if (detectedIdes.isEmpty())
+            return null;
         return detectedIdes.get(selectedIdeIndex);
     }
 
-    public Path getProjectDir() { return projectDir; }
+    public Path getProjectDir() {
+        return projectDir;
+    }
 
     public void setPostGenerateCommand(String command) {
         this.postGenerateCommand = command != null ? command : "";
@@ -80,38 +91,37 @@ public class GenerateScreen {
         return panel("Generating Project",
                 column(
                         spacer(),
-                        text("  " + statusMessage).fg(Color.WHITE),
-                        gauge(progress).fg(SPRING_GREEN),
-                        spacer()
-                )
-        ).rounded().borderColor(SPRING_GREEN).id("generate-panel");
+                        text("  " + statusMessage).fg(AppColors.WHITE),
+                        gauge(progress).fg(AppColors.MAVERICK_GREEN),
+                        spacer()))
+                .rounded().borderColor(AppColors.MAVERICK_GREEN).id("generate-panel");
     }
 
     private Element renderSuccess() {
         var elements = new ArrayList<Element>();
 
-        elements.add(text("  \u2713 Project Generated!").fg(SUCCESS_GREEN).bold());
+        elements.add(text("  \u2713 Project Generated!").fg(AppColors.SUCCESS_GREEN).bold());
         elements.add(text(""));
-        elements.add(text("  Extracted to: " + projectDir).fg(Color.WHITE));
+        elements.add(text("  Extracted to: " + projectDir).fg(AppColors.WHITE));
         elements.add(text(""));
 
         // IDE selection
         if (!detectedIdes.isEmpty()) {
-            elements.add(text("  Open in IDE:").fg(Color.WHITE).bold());
+            elements.add(text("  Open in IDE:").fg(AppColors.WHITE).bold());
             for (int i = 0; i < detectedIdes.size(); i++) {
                 var ide = detectedIdes.get(i);
                 String prefix = i == selectedIdeIndex ? "    \u25b8 " : "      ";
                 var line = text(prefix + ide.name());
                 if (i == selectedIdeIndex) {
-                    line = line.fg(SPRING_GREEN).bold();
+                    line = line.fg(AppColors.MAVERICK_GREEN).bold();
                 } else {
-                    line = line.fg(Color.WHITE);
+                    line = line.fg(AppColors.WHITE);
                 }
                 elements.add(line);
             }
         } else {
-            elements.add(text("  No IDEs detected. Open the project manually:").fg(Color.YELLOW));
-            elements.add(text("  " + projectDir).fg(Color.WHITE));
+            elements.add(text("  No IDEs detected. Open the project manually:").fg(AppColors.YELLOW));
+            elements.add(text("  " + projectDir).fg(AppColors.WHITE));
         }
 
         elements.add(text(""));
@@ -120,24 +130,21 @@ public class GenerateScreen {
                 : "  [Enter] Open + run " + postGenerateCommand + "  ";
         elements.add(
                 row(
-                        text(openLabel).fg(SPRING_GREEN),
-                        text("  [g] Generate Another  ").fg(Color.WHITE),
-                        text("  [q] Quit  ").fg(Color.DARK_GRAY)
-                )
-        );
+                        text(openLabel).fg(AppColors.MAVERICK_GREEN),
+                        text("  [g] Generate Another  ").fg(AppColors.WHITE),
+                        text("  [q] Quit  ").fg(AppColors.DIM_GRAY)));
 
         return panel("\u2713 Project Generated!",
-                column(elements.toArray(Element[]::new))
-        ).rounded().borderColor(SUCCESS_GREEN).id("success-panel");
+                column(elements.toArray(Element[]::new))).rounded().borderColor(AppColors.SUCCESS_GREEN)
+                .id("success-panel");
     }
 
     private Element renderError() {
         return panel("Error",
                 column(
-                        text("  " + errorMessage).fg(Color.RED),
+                        text("  " + errorMessage).fg(AppColors.RED),
                         text(""),
-                        text("  Press [r] to retry or [q] to quit").fg(Color.DARK_GRAY)
-                )
-        ).rounded().borderColor(Color.RED).id("error-panel");
+                        text("  Press [r] to retry or [q] to quit").fg(AppColors.DIM_GRAY)))
+                .rounded().borderColor(AppColors.RED).id("error-panel");
     }
 }

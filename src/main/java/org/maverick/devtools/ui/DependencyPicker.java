@@ -1,7 +1,8 @@
-package dev.danvega.initializr.ui;
+package org.maverick.devtools.ui;
 
-import dev.danvega.initializr.api.InitializrMetadata;
-import dev.danvega.initializr.model.ProjectConfig;
+import org.maverick.devtools.api.InitializrMetadata;
+import org.maverick.devtools.model.ProjectConfig;
+import org.maverick.devtools.util.AppColors;
 import dev.tamboui.style.Color;
 import dev.tamboui.toolkit.element.Element;
 
@@ -15,9 +16,9 @@ import static dev.tamboui.toolkit.Toolkit.*;
  */
 public class DependencyPicker {
 
-    private static final Color SPRING_GREEN = Color.rgb(109, 179, 63);
-    private static final Color DIM_GRAY = Color.DARK_GRAY;
-    private static final Color RECENT_GOLD = Color.rgb(255, 200, 60);
+    // private static final Color SPRING_GREEN = Color.rgb(109, 179, 63);
+    // private static final Color DIM_GRAY = Color.DARK_GRAY;
+    // private static final Color RECENT_GOLD = Color.rgb(255, 200, 60);
 
     private final List<InitializrMetadata.DependencyCategory> categories;
     private final ProjectConfig config;
@@ -31,14 +32,14 @@ public class DependencyPicker {
     private int activeCategoryIndex = -1; // -1 = show all
 
     public record FlatItem(String categoryName, InitializrMetadata.Dependency dependency, boolean isCategory,
-                           int[] matchPositions) {
+            int[] matchPositions) {
         public FlatItem(String categoryName, InitializrMetadata.Dependency dependency, boolean isCategory) {
             this(categoryName, dependency, isCategory, null);
         }
     }
 
     public DependencyPicker(List<InitializrMetadata.DependencyCategory> categories, ProjectConfig config,
-                            List<List<String>> recentDependencies) {
+            List<List<String>> recentDependencies) {
         this.categories = categories;
         this.config = config;
         this.recentDependencies = recentDependencies != null ? recentDependencies : List.of();
@@ -71,7 +72,9 @@ public class DependencyPicker {
         return searchQuery;
     }
 
-    public boolean isAtTop() { return cursorIndex <= 0; }
+    public boolean isAtTop() {
+        return cursorIndex <= 0;
+    }
 
     public void moveUp() {
         if (cursorIndex > 0) {
@@ -101,7 +104,8 @@ public class DependencyPicker {
     }
 
     public void cycleCategory() {
-        if (categories.isEmpty()) return;
+        if (categories.isEmpty())
+            return;
         activeCategoryIndex++;
         if (activeCategoryIndex >= categories.size()) {
             activeCategoryIndex = -1; // back to "All"
@@ -145,7 +149,8 @@ public class DependencyPicker {
 
         // Normal category listing (with optional filter)
         for (int i = 0; i < categories.size(); i++) {
-            if (activeCategoryIndex >= 0 && i != activeCategoryIndex) continue;
+            if (activeCategoryIndex >= 0 && i != activeCategoryIndex)
+                continue;
             var category = categories.get(i);
             if (!category.values().isEmpty()) {
                 flatItems.add(new FlatItem(category.name(), null, true));
@@ -163,7 +168,8 @@ public class DependencyPicker {
             for (var id : depSet) {
                 if (seen.add(id) && depLookup.containsKey(id)) {
                     result.add(depLookup.get(id));
-                    if (result.size() >= 10) return result;
+                    if (result.size() >= 10)
+                        return result;
                 }
             }
         }
@@ -171,12 +177,14 @@ public class DependencyPicker {
     }
 
     private void rebuildWithFuzzySearch() {
-        record ScoredDep(InitializrMetadata.Dependency dep, String categoryName, int score, int[] matchPositions) {}
+        record ScoredDep(InitializrMetadata.Dependency dep, String categoryName, int score, int[] matchPositions) {
+        }
 
         var scored = new ArrayList<ScoredDep>();
 
         for (var category : categories) {
-            if (activeCategoryIndex >= 0 && categories.indexOf(category) != activeCategoryIndex) continue;
+            if (activeCategoryIndex >= 0 && categories.indexOf(category) != activeCategoryIndex)
+                continue;
             for (var dep : category.values()) {
                 String name = dep.name() != null ? dep.name() : "";
                 String id = dep.id() != null ? dep.id() : "";
@@ -208,10 +216,12 @@ public class DependencyPicker {
         }
     }
 
-    record FuzzyResult(int score, int[] positions) {}
+    record FuzzyResult(int score, int[] positions) {
+    }
 
     private FuzzyResult fuzzyScore(String query, String target) {
-        if (query.isEmpty() || target.isEmpty()) return new FuzzyResult(0, new int[0]);
+        if (query.isEmpty() || target.isEmpty())
+            return new FuzzyResult(0, new int[0]);
 
         String lowerTarget = target.toLowerCase();
 
@@ -219,7 +229,8 @@ public class DependencyPicker {
         int substringIdx = lowerTarget.indexOf(query);
         if (substringIdx >= 0) {
             int[] positions = new int[query.length()];
-            for (int i = 0; i < query.length(); i++) positions[i] = substringIdx + i;
+            for (int i = 0; i < query.length(); i++)
+                positions[i] = substringIdx + i;
             return new FuzzyResult(1000 + (100 - substringIdx), positions); // bonus for earlier match
         }
 
@@ -260,7 +271,8 @@ public class DependencyPicker {
                 }
                 targetIdx++;
             }
-            if (!found) return new FuzzyResult(0, new int[0]); // not all chars matched
+            if (!found)
+                return new FuzzyResult(0, new int[0]); // not all chars matched
         }
 
         // Density bonus: fewer gaps = better
@@ -280,12 +292,10 @@ public class DependencyPicker {
         if (!selected.isEmpty()) {
             elements.add(
                     text("  Selected: " + String.join(", ", selected) + "  (" + selected.size() + ")")
-                            .fg(SPRING_GREEN).bold()
-            );
+                            .fg(AppColors.MAVERICK_GREEN).bold());
         } else {
             elements.add(
-                    text("  Search or browse to add dependencies").fg(DIM_GRAY).italic()
-            );
+                    text("  Search or browse to add dependencies").fg(AppColors.DIM_GRAY).italic());
         }
 
         // Dependency list
@@ -300,8 +310,7 @@ public class DependencyPicker {
                 boolean isRecent = item.categoryName().startsWith("\u2605");
                 elements.add(
                         text("  > " + item.categoryName())
-                                .fg(isRecent ? RECENT_GOLD : Color.CYAN).bold()
-                );
+                                .fg(isRecent ? AppColors.RECENT_GOLD : AppColors.CYAN).bold());
             } else {
                 var dep = item.dependency();
                 boolean isSelected = config.isDependencySelected(dep.id());
@@ -312,16 +321,17 @@ public class DependencyPicker {
 
                 if (inSearchMode && item.matchPositions() != null && item.matchPositions().length > 0) {
                     // Render with highlighted match positions
-                    elements.add(renderHighlightedDep(prefix, checkmark, depName, item.matchPositions(), isCursor, isSelected));
+                    elements.add(renderHighlightedDep(prefix, checkmark, depName, item.matchPositions(), isCursor,
+                            isSelected));
                 } else {
                     String label = prefix + checkmark + depName;
                     var line = text(label);
                     if (isCursor) {
-                        line = line.fg(Color.WHITE).bold();
+                        line = line.fg(AppColors.WHITE).bold();
                     } else if (isSelected) {
-                        line = line.fg(SPRING_GREEN);
+                        line = line.fg(AppColors.MAVERICK_GREEN);
                     } else {
-                        line = line.fg(Color.WHITE);
+                        line = line.fg(AppColors.WHITE);
                     }
                     elements.add(line);
                 }
@@ -329,25 +339,27 @@ public class DependencyPicker {
         }
 
         if (flatItems.isEmpty()) {
-            elements.add(text("  No dependencies match your search").fg(DIM_GRAY).italic());
+            elements.add(text("  No dependencies match your search").fg(AppColors.DIM_GRAY).italic());
         }
 
         return column(elements.toArray(Element[]::new));
     }
 
     private Element renderHighlightedDep(String prefix, String checkmark, String name,
-                                          int[] matchPositions, boolean isCursor, boolean isSelected) {
+            int[] matchPositions, boolean isCursor, boolean isSelected) {
         // Build the name with highlighted chars using row of text segments
         var parts = new ArrayList<Element>();
         String beforeName = prefix + checkmark;
-        Color baseColor = isCursor ? Color.WHITE : (isSelected ? SPRING_GREEN : Color.WHITE);
+        Color baseColor = isCursor ? AppColors.WHITE : (isSelected ? AppColors.MAVERICK_GREEN : AppColors.WHITE);
 
         var prefixEl = text(beforeName).fg(baseColor);
-        if (isCursor) prefixEl = prefixEl.bold();
+        if (isCursor)
+            prefixEl = prefixEl.bold();
         parts.add(prefixEl);
 
         var matchSet = new HashSet<Integer>();
-        for (int pos : matchPositions) matchSet.add(pos);
+        for (int pos : matchPositions)
+            matchSet.add(pos);
 
         // Group consecutive chars with same highlight state
         var sb = new StringBuilder();
@@ -364,10 +376,11 @@ public class DependencyPicker {
                 // Flush segment
                 var segment = text(sb.toString());
                 if (currentHighlight) {
-                    segment = segment.fg(SPRING_GREEN).bold();
+                    segment = segment.fg(AppColors.MAVERICK_GREEN).bold();
                 } else {
                     segment = segment.fg(baseColor);
-                    if (isCursor) segment = segment.bold();
+                    if (isCursor)
+                        segment = segment.bold();
                 }
                 parts.add(segment);
                 sb.setLength(0);
@@ -379,10 +392,11 @@ public class DependencyPicker {
         if (!sb.isEmpty()) {
             var segment = text(sb.toString());
             if (currentHighlight) {
-                segment = segment.fg(SPRING_GREEN).bold();
+                segment = segment.fg(AppColors.MAVERICK_GREEN).bold();
             } else {
                 segment = segment.fg(baseColor);
-                if (isCursor) segment = segment.bold();
+                if (isCursor)
+                    segment = segment.bold();
             }
             parts.add(segment);
         }

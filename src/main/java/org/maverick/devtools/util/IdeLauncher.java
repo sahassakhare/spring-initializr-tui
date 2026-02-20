@@ -1,4 +1,4 @@
-package dev.danvega.initializr.util;
+package org.maverick.devtools.util;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -12,7 +12,8 @@ public class IdeLauncher {
 
     private static final OsIdeLocator LOCATOR = OsIdeLocator.current();
 
-    public record DetectedIde(String name, String command, Path path) {}
+    public record DetectedIde(String name, String command, Path path) {
+    }
 
     /**
      * Scan for installed IDEs on the current system.

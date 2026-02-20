@@ -1,8 +1,9 @@
-package dev.danvega.initializr.util;
+package org.maverick.devtools.util;
 
+import org.maverick.devtools.model.ProjectConfig;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import tools.jackson.databind.SerializationFeature;
-import tools.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -21,7 +22,7 @@ public class ConfigStore {
 
     private final Path configDir;
     private final Path configFile;
-    private final JsonMapper jsonMapper;
+    private final ObjectMapper objectMapper;
 
     public ConfigStore() {
         this(DEFAULT_CONFIG_DIR);
@@ -30,9 +31,8 @@ public class ConfigStore {
     public ConfigStore(Path configDir) {
         this.configDir = configDir;
         this.configFile = configDir.resolve("config.json");
-        this.jsonMapper = JsonMapper.builder()
-                .enable(SerializationFeature.INDENT_OUTPUT)
-                .build();
+        this.objectMapper = new ObjectMapper()
+                .enable(SerializationFeature.INDENT_OUTPUT);
     }
 
     public UserPreferences load() {
@@ -40,7 +40,7 @@ public class ConfigStore {
             return new UserPreferences();
         }
         try {
-            return jsonMapper.readValue(configFile, UserPreferences.class);
+            return objectMapper.readValue(configFile.toFile(), UserPreferences.class);
         } catch (Exception e) {
             return new UserPreferences();
         }
@@ -49,14 +49,15 @@ public class ConfigStore {
     public void save(UserPreferences prefs) {
         try {
             Files.createDirectories(configDir);
-            jsonMapper.writeValue(configFile, prefs);
+            objectMapper.writeValue(configFile.toFile(), prefs);
         } catch (Exception e) {
             // Silently fail — preferences are not critical
         }
     }
 
     public void addRecentDependencies(UserPreferences prefs, List<String> deps) {
-        if (deps.isEmpty()) return;
+        if (deps.isEmpty())
+            return;
         prefs.recentDependencies().removeIf(r -> r.equals(deps));
         prefs.recentDependencies().addFirst(new ArrayList<>(deps));
         while (prefs.recentDependencies().size() > MAX_RECENT) {
@@ -75,28 +76,68 @@ public class ConfigStore {
         private String postGenerateCommand = "";
         private List<List<String>> recentDependencies = new ArrayList<>();
 
-        public String getPostGenerateCommand() { return postGenerateCommand; }
-        public void setPostGenerateCommand(String v) { this.postGenerateCommand = v; }
+        public String getPostGenerateCommand() {
+            return postGenerateCommand;
+        }
 
-        public String getLastProjectType() { return lastProjectType; }
-        public void setLastProjectType(String v) { this.lastProjectType = v; }
+        public void setPostGenerateCommand(String v) {
+            this.postGenerateCommand = v;
+        }
 
-        public String getLastLanguage() { return lastLanguage; }
-        public void setLastLanguage(String v) { this.lastLanguage = v; }
+        public String getLastProjectType() {
+            return lastProjectType;
+        }
 
-        public String getLastJavaVersion() { return lastJavaVersion; }
-        public void setLastJavaVersion(String v) { this.lastJavaVersion = v; }
+        public void setLastProjectType(String v) {
+            this.lastProjectType = v;
+        }
 
-        public String getLastGroupId() { return lastGroupId; }
-        public void setLastGroupId(String v) { this.lastGroupId = v; }
+        public String getLastLanguage() {
+            return lastLanguage;
+        }
 
-        public String getLastPackaging() { return lastPackaging; }
-        public void setLastPackaging(String v) { this.lastPackaging = v; }
+        public void setLastLanguage(String v) {
+            this.lastLanguage = v;
+        }
 
-        public String getLastApplicationFormat() { return lastApplicationFormat; }
-        public void setLastApplicationFormat(String v) { this.lastApplicationFormat = v; }
+        public String getLastJavaVersion() {
+            return lastJavaVersion;
+        }
 
-        public List<List<String>> recentDependencies() { return recentDependencies; }
-        public void setRecentDependencies(List<List<String>> v) { this.recentDependencies = v; }
+        public void setLastJavaVersion(String v) {
+            this.lastJavaVersion = v;
+        }
+
+        public String getLastGroupId() {
+            return lastGroupId;
+        }
+
+        public void setLastGroupId(String v) {
+            this.lastGroupId = v;
+        }
+
+        public String getLastPackaging() {
+            return lastPackaging;
+        }
+
+        public void setLastPackaging(String v) {
+            this.lastPackaging = v;
+        }
+
+        public String getLastApplicationFormat() {
+            return lastApplicationFormat;
+        }
+
+        public void setLastApplicationFormat(String v) {
+            this.lastApplicationFormat = v;
+        }
+
+        public List<List<String>> recentDependencies() {
+            return recentDependencies;
+        }
+
+        public void setRecentDependencies(List<List<String>> v) {
+            this.recentDependencies = v;
+        }
     }
 }

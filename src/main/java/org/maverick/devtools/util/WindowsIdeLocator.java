@@ -1,6 +1,6 @@
-package dev.danvega.initializr.util;
+package org.maverick.devtools.util;
 
-import dev.danvega.initializr.util.IdeLauncher.DetectedIde;
+import org.maverick.devtools.util.IdeLauncher.DetectedIde;
 
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
@@ -18,8 +18,7 @@ public final class WindowsIdeLocator implements OsIdeLocator {
     private static final Path LOCAL_APP_DATA = Path.of(
             System.getenv("LOCALAPPDATA") != null
                     ? System.getenv("LOCALAPPDATA")
-                    : System.getProperty("user.home") + "\\AppData\\Local"
-    );
+                    : System.getProperty("user.home") + "\\AppData\\Local");
 
     @Override
     public List<DetectedIde> detectIdes() {
@@ -47,8 +46,7 @@ public final class WindowsIdeLocator implements OsIdeLocator {
         ProcessBuilder pb = new ProcessBuilder(
                 "cmd", "/c", "start", "\"\"",
                 ide.path().toString(),
-                projectDir.toString()
-        );
+                projectDir.toString());
         pb.inheritIO();
         pb.start();
     }
@@ -60,13 +58,15 @@ public final class WindowsIdeLocator implements OsIdeLocator {
         };
 
         for (Path root : searchRoots) {
-            if (!Files.isDirectory(root)) continue;
+            if (!Files.isDirectory(root))
+                continue;
             try (DirectoryStream<Path> dirs = Files.newDirectoryStream(root, "IntelliJ IDEA*")) {
                 for (Path dir : dirs) {
                     Path exe = dir.resolve("bin\\idea64.exe");
                     if (Files.exists(exe)) {
                         String name = dir.getFileName().toString().contains("Community")
-                                ? "IntelliJ IDEA CE" : "IntelliJ IDEA";
+                                ? "IntelliJ IDEA CE"
+                                : "IntelliJ IDEA";
                         ides.add(new DetectedIde(name, "idea", exe));
                     }
                 }

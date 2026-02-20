@@ -1,11 +1,12 @@
-package dev.danvega.initializr;
+package org.maverick.devtools;
 
-import dev.danvega.initializr.api.InitializrClient;
-import dev.danvega.initializr.api.InitializrMetadata;
-import dev.danvega.initializr.model.ProjectConfig;
-import dev.danvega.initializr.ui.*;
-import dev.danvega.initializr.util.ConfigStore;
-import dev.danvega.initializr.util.IdeLauncher;
+import org.maverick.devtools.api.InitializrClient;
+import org.maverick.devtools.api.InitializrMetadata;
+import org.maverick.devtools.model.ProjectConfig;
+import org.maverick.devtools.ui.*;
+import org.maverick.devtools.util.AppColors;
+import org.maverick.devtools.util.ConfigStore;
+import org.maverick.devtools.util.IdeLauncher;
 import dev.tamboui.style.Color;
 import dev.tamboui.tui.event.KeyCode;
 import dev.tamboui.tui.event.KeyEvent;
@@ -30,9 +31,11 @@ import static dev.tamboui.toolkit.Toolkit.*;
  */
 public class SpringInitializrTui extends ToolkitApp {
 
-    private static final Color SPRING_GREEN = Color.rgb(109, 179, 63);
+    // private static final Color SPRING_GREEN = Color.rgb(109, 179, 63);
 
-    enum Screen { SPLASH, MAIN, EXPLORE, GENERATE, HELP }
+    enum Screen {
+        SPLASH, MAIN, EXPLORE, GENERATE, HELP
+    }
 
     private volatile Screen currentScreen = Screen.SPLASH;
     private Screen previousScreen = Screen.MAIN;
@@ -93,8 +96,9 @@ public class SpringInitializrTui extends ToolkitApp {
     protected Element render() {
         Element content = switch (currentScreen) {
             case SPLASH -> new SplashScreen(splashProgress, splashMessage).render();
-            case MAIN -> mainScreen != null ? mainScreen.render() : text("Loading...").fg(SPRING_GREEN);
-            case EXPLORE -> exploreScreen != null ? renderExploreScreen() : text("Loading...").fg(SPRING_GREEN);
+            case MAIN -> mainScreen != null ? mainScreen.render() : text("Loading...").fg(AppColors.MAVERICK_GREEN);
+            case EXPLORE ->
+                exploreScreen != null ? renderExploreScreen() : text("Loading...").fg(AppColors.MAVERICK_GREEN);
             case GENERATE -> generateScreen.render();
             case HELP -> helpScreen.render();
         };
@@ -121,7 +125,8 @@ public class SpringInitializrTui extends ToolkitApp {
     }
 
     private EventResult handleMainScreenKey(KeyEvent event) {
-        if (mainScreen == null) return EventResult.UNHANDLED;
+        if (mainScreen == null)
+            return EventResult.UNHANDLED;
 
         // Search mode handling
         if (mainScreen.isSearchMode()) {
@@ -359,12 +364,10 @@ public class SpringInitializrTui extends ToolkitApp {
     }
 
     private static final Set<String> SKIP_EXTENSIONS = Set.of(
-            ".jar", ".class", ".png", ".jpg", ".jpeg", ".gif", ".ico", ".exe", ".bin"
-    );
+            ".jar", ".class", ".png", ".jpg", ".jpeg", ".gif", ".ico", ".exe", ".bin");
 
     private static final Set<String> SKIP_FILES = Set.of(
-            "mvnw", "mvnw.cmd", "gradlew", "gradlew.bat"
-    );
+            "mvnw", "mvnw.cmd", "gradlew", "gradlew.bat");
 
     private void startExplore() {
         CompletableFuture.runAsync(() -> {
@@ -394,24 +397,31 @@ public class SpringInitializrTui extends ToolkitApp {
         try (var zis = new ZipInputStream(new ByteArrayInputStream(zipBytes))) {
             ZipEntry entry;
             while ((entry = zis.getNextEntry()) != null) {
-                if (entry.isDirectory()) continue;
+                if (entry.isDirectory())
+                    continue;
 
                 String name = entry.getName();
                 // Strip leading directory (e.g., "demo/pom.xml" -> "pom.xml")
                 int slash = name.indexOf('/');
                 String relativeName = slash >= 0 ? name.substring(slash + 1) : name;
-                if (relativeName.isEmpty()) continue;
+                if (relativeName.isEmpty())
+                    continue;
 
                 // Skip binary files and wrapper scripts
                 String simpleName = relativeName.contains("/")
                         ? relativeName.substring(relativeName.lastIndexOf('/') + 1)
                         : relativeName;
-                if (SKIP_FILES.contains(simpleName)) continue;
+                if (SKIP_FILES.contains(simpleName))
+                    continue;
                 boolean skip = false;
                 for (String ext : SKIP_EXTENSIONS) {
-                    if (simpleName.toLowerCase().endsWith(ext)) { skip = true; break; }
+                    if (simpleName.toLowerCase().endsWith(ext)) {
+                        skip = true;
+                        break;
+                    }
                 }
-                if (skip) continue;
+                if (skip)
+                    continue;
 
                 String content = new String(zis.readAllBytes(), StandardCharsets.UTF_8);
 
@@ -570,8 +580,10 @@ public class SpringInitializrTui extends ToolkitApp {
             // Find common prefix with previous key
             int common = 0;
             for (int i = 0; i < Math.min(parts.length - 1, prevParts.length - 1); i++) {
-                if (parts[i].equals(prevParts[i])) common++;
-                else break;
+                if (parts[i].equals(prevParts[i]))
+                    common++;
+                else
+                    break;
             }
 
             // Write each new nesting level
@@ -590,18 +602,16 @@ public class SpringInitializrTui extends ToolkitApp {
                 " Group: %s  Artifact: %s  Boot: %s  Java: %s  Dependencies: %d",
                 config.getGroupId(), config.getArtifactId(),
                 ProjectConfig.cleanBootVersion(config.getBootVersion()),
-                config.getJavaVersion(), config.getSelectedCount()
-        );
+                config.getJavaVersion(), config.getSelectedCount());
 
         return column(
                 panel("",
                         row(
-                                text("  SPRING INITIALIZR").fg(SPRING_GREEN).bold(),
+                                text("  MAVERICK DEVTOOLS").fg(AppColors.MAVERICK_GREEN).bold(),
                                 spacer(),
-                                text("Explore  ").fg(Color.CYAN)
-                        )
-                ).rounded().borderColor(SPRING_GREEN).length(3),
-                row(text(summary).fg(Color.DARK_GRAY)).length(1),
+                                text("Explore  ").fg(AppColors.CYAN)))
+                        .rounded().borderColor(AppColors.MAVERICK_GREEN).length(3),
+                row(text(summary).fg(AppColors.DIM_GRAY)).length(1),
                 exploreScreen.render(26),
                 row(
                         text("  "),
@@ -609,16 +619,15 @@ public class SpringInitializrTui extends ToolkitApp {
                         text("\u2191\u2193").fg(Color.WHITE), text(":scroll  ").fg(Color.DARK_GRAY),
                         text("Enter").fg(Color.WHITE), text(":generate  ").fg(Color.DARK_GRAY),
                         text("Esc").fg(Color.WHITE), text(":back  ").fg(Color.DARK_GRAY),
-                        spacer()
-                ).length(1)
-        );
+                        spacer()).length(1));
     }
 
     public static void main(String[] args) throws Exception {
         var app = new SpringInitializrTui();
         app.run();
 
-        // Execute post-generate hook after TUI has fully exited and terminal is restored
+        // Execute post-generate hook after TUI has fully exited and terminal is
+        // restored
         if (app.pendingHookCommand != null && app.pendingHookDir != null) {
             boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("win");
             var pb = isWindows

@@ -1,7 +1,7 @@
-package dev.danvega.initializr.api;
+package org.maverick.devtools.api;
 
-import dev.danvega.initializr.model.ProjectConfig;
-import tools.jackson.databind.json.JsonMapper;
+import org.maverick.devtools.model.ProjectConfig;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.net.URI;
@@ -21,13 +21,13 @@ public class InitializrClient {
 
     private static final String BASE_URL = "https://start.spring.io";
     private final HttpClient httpClient;
-    private final JsonMapper jsonMapper;
+    private final ObjectMapper objectMapper;
 
     public InitializrClient() {
         this.httpClient = HttpClient.newBuilder()
                 .followRedirects(HttpClient.Redirect.NORMAL)
                 .build();
-        this.jsonMapper = JsonMapper.builder().build();
+        this.objectMapper = new ObjectMapper();
     }
 
     /**
@@ -44,18 +44,20 @@ public class InitializrClient {
         if (response.statusCode() != 200) {
             throw new IOException("Failed to fetch metadata: HTTP " + response.statusCode());
         }
-        return jsonMapper.readValue(response.body(), InitializrMetadata.Metadata.class);
+        return objectMapper.readValue(response.body(), InitializrMetadata.Metadata.class);
     }
 
     /**
-     * Preview the build file (pom.xml or build.gradle) without downloading the full project.
+     * Preview the build file (pom.xml or build.gradle) without downloading the full
+     * project.
      */
     public String previewBuildFile(ProjectConfig config) throws IOException, InterruptedException {
         return previewBuildFile(config, config.getProjectType());
     }
 
     /**
-     * Preview a specific build file format regardless of the project's configured type.
+     * Preview a specific build file format regardless of the project's configured
+     * type.
      */
     public String previewBuildFile(ProjectConfig config, String projectType) throws IOException, InterruptedException {
         String endpoint = switch (projectType) {

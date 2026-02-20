@@ -1,7 +1,8 @@
-package dev.danvega.initializr.ui;
+package org.maverick.devtools.ui;
 
-import dev.danvega.initializr.api.InitializrMetadata;
-import dev.danvega.initializr.model.ProjectConfig;
+import org.maverick.devtools.api.InitializrMetadata;
+import org.maverick.devtools.model.ProjectConfig;
+import org.maverick.devtools.util.AppColors;
 import dev.tamboui.style.Color;
 import dev.tamboui.toolkit.element.Element;
 
@@ -15,11 +16,14 @@ import static dev.tamboui.toolkit.Toolkit.*;
  */
 public class MainScreen {
 
-    private static final Color SPRING_GREEN = Color.rgb(109, 179, 63);
-    private static final Color BRIGHT_GREEN = Color.rgb(143, 213, 96);
-    private static final Color DIM_GRAY = Color.DARK_GRAY;
+    // private static final Color SPRING_GREEN = Color.rgb(109, 179, 63);
+    // private static final Color BRIGHT_GREEN = Color.rgb(143, 213, 96);
+    // private static final Color DIM_GRAY = Color.DARK_GRAY;
 
-    public enum FocusArea { PROJECT_TYPE, LANGUAGE, BOOT_VERSION, GROUP, ARTIFACT, NAME, DESCRIPTION, PACKAGING, JAVA_VERSION, APPLICATION_FORMAT, DEPENDENCIES }
+    public enum FocusArea {
+        PROJECT_TYPE, LANGUAGE, BOOT_VERSION, GROUP, ARTIFACT, NAME, DESCRIPTION, PACKAGING, JAVA_VERSION,
+        APPLICATION_FORMAT, DEPENDENCIES
+    }
 
     private final InitializrMetadata.Metadata metadata;
     private final ProjectConfig config;
@@ -30,14 +34,13 @@ public class MainScreen {
     private StringBuilder searchBuffer = new StringBuilder();
 
     public MainScreen(InitializrMetadata.Metadata metadata, ProjectConfig config,
-                      List<List<String>> recentDependencies) {
+            List<List<String>> recentDependencies) {
         this.metadata = metadata;
         this.config = config;
         this.dependencyPicker = new DependencyPicker(
                 metadata.dependencies() != null ? metadata.dependencies().values() : List.of(),
                 config,
-                recentDependencies
-        );
+                recentDependencies);
         this.appFormatField = metadata.applicationFormat() != null
                 ? metadata.applicationFormat()
                 : new InitializrMetadata.SelectField("single-select", "properties",
@@ -45,9 +48,17 @@ public class MainScreen {
                                 new InitializrMetadata.SelectOption("yaml", "YAML")));
     }
 
-    public FocusArea getFocusArea() { return focusArea; }
-    public DependencyPicker getDependencyPicker() { return dependencyPicker; }
-    public boolean isSearchMode() { return searchMode; }
+    public FocusArea getFocusArea() {
+        return focusArea;
+    }
+
+    public DependencyPicker getDependencyPicker() {
+        return dependencyPicker;
+    }
+
+    public boolean isSearchMode() {
+        return searchMode;
+    }
 
     public void enterSearchMode() {
         searchMode = true;
@@ -97,17 +108,25 @@ public class MainScreen {
 
     public void cycleOption(int direction) {
         switch (focusArea) {
-            case PROJECT_TYPE -> cycleSelectField(metadata.type(), direction, config::getProjectType, config::setProjectType);
+            case PROJECT_TYPE ->
+                cycleSelectField(metadata.type(), direction, config::getProjectType, config::setProjectType);
             case LANGUAGE -> cycleSelectField(metadata.language(), direction, config::getLanguage, config::setLanguage);
-            case BOOT_VERSION -> cycleSelectField(metadata.bootVersion(), direction, config::getBootVersion, config::setBootVersion);
-            case PACKAGING -> cycleSelectField(metadata.packaging(), direction, config::getPackaging, config::setPackaging);
-            case JAVA_VERSION -> cycleSelectField(metadata.javaVersion(), direction, config::getJavaVersion, config::setJavaVersion);
-            case APPLICATION_FORMAT -> cycleSelectField(appFormatField, direction, config::getApplicationFormat, config::setApplicationFormat);
+            case BOOT_VERSION ->
+                cycleSelectField(metadata.bootVersion(), direction, config::getBootVersion, config::setBootVersion);
+            case PACKAGING ->
+                cycleSelectField(metadata.packaging(), direction, config::getPackaging, config::setPackaging);
+            case JAVA_VERSION ->
+                cycleSelectField(metadata.javaVersion(), direction, config::getJavaVersion, config::setJavaVersion);
+            case APPLICATION_FORMAT ->
+                cycleSelectField(appFormatField, direction, config::getApplicationFormat, config::setApplicationFormat);
             case DEPENDENCIES -> {
-                if (direction > 0) dependencyPicker.moveDown();
-                else dependencyPicker.moveUp();
+                if (direction > 0)
+                    dependencyPicker.moveDown();
+                else
+                    dependencyPicker.moveUp();
             }
-            default -> {}
+            default -> {
+            }
         }
     }
 
@@ -117,17 +136,35 @@ public class MainScreen {
             case ARTIFACT -> config.setArtifactId(config.getArtifactId() + c);
             case NAME -> config.setName(config.getName() + c);
             case DESCRIPTION -> config.setDescription(config.getDescription() + c);
-            default -> {}
+            default -> {
+            }
         }
     }
 
     public void handleBackspace() {
         switch (focusArea) {
-            case GROUP -> { String v = config.getGroupId(); if (!v.isEmpty()) config.setGroupId(v.substring(0, v.length() - 1)); }
-            case ARTIFACT -> { String v = config.getArtifactId(); if (!v.isEmpty()) config.setArtifactId(v.substring(0, v.length() - 1)); }
-            case NAME -> { String v = config.getName(); if (!v.isEmpty()) config.setName(v.substring(0, v.length() - 1)); }
-            case DESCRIPTION -> { String v = config.getDescription(); if (!v.isEmpty()) config.setDescription(v.substring(0, v.length() - 1)); }
-            default -> {}
+            case GROUP -> {
+                String v = config.getGroupId();
+                if (!v.isEmpty())
+                    config.setGroupId(v.substring(0, v.length() - 1));
+            }
+            case ARTIFACT -> {
+                String v = config.getArtifactId();
+                if (!v.isEmpty())
+                    config.setArtifactId(v.substring(0, v.length() - 1));
+            }
+            case NAME -> {
+                String v = config.getName();
+                if (!v.isEmpty())
+                    config.setName(v.substring(0, v.length() - 1));
+            }
+            case DESCRIPTION -> {
+                String v = config.getDescription();
+                if (!v.isEmpty())
+                    config.setDescription(v.substring(0, v.length() - 1));
+            }
+            default -> {
+            }
         }
     }
 
@@ -146,14 +183,18 @@ public class MainScreen {
     }
 
     private void cycleSelectField(InitializrMetadata.SelectField field, int direction,
-                                   java.util.function.Supplier<String> getter,
-                                   java.util.function.Consumer<String> setter) {
-        if (field == null || field.values().isEmpty()) return;
+            java.util.function.Supplier<String> getter,
+            java.util.function.Consumer<String> setter) {
+        if (field == null || field.values().isEmpty())
+            return;
         var values = field.values();
         String current = getter.get();
         int idx = 0;
         for (int i = 0; i < values.size(); i++) {
-            if (values.get(i).id().equals(current)) { idx = i; break; }
+            if (values.get(i).id().equals(current)) {
+                idx = i;
+                break;
+            }
         }
         idx = (idx + direction + values.size()) % values.size();
         setter.accept(values.get(idx).id());
@@ -165,29 +206,30 @@ public class MainScreen {
                 renderConfigForm(),
                 renderDependencyPanel(),
                 renderActionBar(),
-                renderFooter()
-        ).id("main-screen");
+                renderFooter()).id("main-screen");
     }
 
     private Element renderHeader() {
         return panel("",
                 row(
-                        text("  SPRING INITIALIZR").fg(SPRING_GREEN).bold(),
+                        text("  MAVERICK DEVTOOLS").fg(AppColors.MAVERICK_GREEN).bold(),
                         spacer(),
-                        text("v" + appVersion() + "  ").fg(DIM_GRAY)
-                )
-        ).rounded().borderColor(SPRING_GREEN).length(3).id("header");
+                        text("v" + appVersion() + "  ").fg(AppColors.DIM_GRAY)))
+                .rounded().borderColor(AppColors.MAVERICK_GREEN).length(3).id("header");
     }
 
     private Element renderConfigForm() {
         var elements = new ArrayList<Element>();
 
         // Project type (radio-style)
-        elements.add(renderSelectRow("Project", metadata.type(), config.getProjectType(), focusArea == FocusArea.PROJECT_TYPE));
+        elements.add(renderSelectRow("Project", metadata.type(), config.getProjectType(),
+                focusArea == FocusArea.PROJECT_TYPE));
         // Language
-        elements.add(renderSelectRow("Language", metadata.language(), config.getLanguage(), focusArea == FocusArea.LANGUAGE));
+        elements.add(renderSelectRow("Language", metadata.language(), config.getLanguage(),
+                focusArea == FocusArea.LANGUAGE));
         // Boot version
-        elements.add(renderSelectRow("Boot", metadata.bootVersion(), config.getBootVersion(), focusArea == FocusArea.BOOT_VERSION));
+        elements.add(renderSelectRow("Boot", metadata.bootVersion(), config.getBootVersion(),
+                focusArea == FocusArea.BOOT_VERSION));
 
         elements.add(text(""));
 
@@ -201,19 +243,24 @@ public class MainScreen {
         elements.add(text(""));
 
         // Packaging and Java
-        elements.add(renderSelectRow("Packaging", metadata.packaging(), config.getPackaging(), focusArea == FocusArea.PACKAGING));
-        elements.add(renderSelectRow("Java", metadata.javaVersion(), config.getJavaVersion(), focusArea == FocusArea.JAVA_VERSION));
-        elements.add(renderSelectRow("Config", appFormatField, config.getApplicationFormat(), focusArea == FocusArea.APPLICATION_FORMAT));
+        elements.add(renderSelectRow("Packaging", metadata.packaging(), config.getPackaging(),
+                focusArea == FocusArea.PACKAGING));
+        elements.add(renderSelectRow("Java", metadata.javaVersion(), config.getJavaVersion(),
+                focusArea == FocusArea.JAVA_VERSION));
+        elements.add(renderSelectRow("Config", appFormatField, config.getApplicationFormat(),
+                focusArea == FocusArea.APPLICATION_FORMAT));
 
         return panel("Configuration",
-                column(elements.toArray(Element[]::new))
-        ).rounded().borderColor(focusArea != FocusArea.DEPENDENCIES ? BRIGHT_GREEN : DIM_GRAY).id("config-form");
+                column(elements.toArray(Element[]::new))).rounded()
+                .borderColor(focusArea != FocusArea.DEPENDENCIES ? AppColors.BRIGHT_GREEN : AppColors.DIM_GRAY)
+                .id("config-form");
     }
 
-    private Element renderSelectRow(String label, InitializrMetadata.SelectField field, String currentValue, boolean focused) {
+    private Element renderSelectRow(String label, InitializrMetadata.SelectField field, String currentValue,
+            boolean focused) {
         var parts = new ArrayList<Element>();
         String paddedLabel = String.format("  %-12s", label);
-        parts.add(text(paddedLabel).fg(focused ? Color.WHITE : DIM_GRAY).bold());
+        parts.add(text(paddedLabel).fg(focused ? AppColors.WHITE : AppColors.DIM_GRAY).bold());
 
         if (field != null) {
             for (var option : field.values()) {
@@ -221,11 +268,11 @@ public class MainScreen {
                 String marker = selected ? "\u25cf " : "\u25cb ";
                 var optText = text(marker + displayName(option) + "  ");
                 if (selected && focused) {
-                    optText = optText.fg(SPRING_GREEN).bold();
+                    optText = optText.fg(AppColors.MAVERICK_GREEN).bold();
                 } else if (selected) {
-                    optText = optText.fg(SPRING_GREEN);
+                    optText = optText.fg(AppColors.MAVERICK_GREEN);
                 } else {
-                    optText = optText.fg(DIM_GRAY);
+                    optText = optText.fg(AppColors.DIM_GRAY);
                 }
                 parts.add(optText);
             }
@@ -233,7 +280,7 @@ public class MainScreen {
 
         if (focused) {
             parts.add(spacer());
-            parts.add(text("\u25c0 \u25b6 ").fg(DIM_GRAY));
+            parts.add(text("\u25c0 \u25b6 ").fg(AppColors.DIM_GRAY));
         }
 
         return row(parts.toArray(Element[]::new));
@@ -244,9 +291,8 @@ public class MainScreen {
         String displayValue = focused ? "[ " + value + "_ ]" : "[ " + value + " ]";
 
         return row(
-                text(paddedLabel).fg(focused ? Color.WHITE : DIM_GRAY).bold(),
-                text(displayValue).fg(focused ? SPRING_GREEN : Color.WHITE)
-        );
+                text(paddedLabel).fg(focused ? AppColors.WHITE : AppColors.DIM_GRAY).bold(),
+                text(displayValue).fg(focused ? AppColors.MAVERICK_GREEN : AppColors.WHITE));
     }
 
     private Element renderDependencyPanel() {
@@ -256,18 +302,14 @@ public class MainScreen {
         if (searchMode) {
             elements.add(
                     row(
-                            text("  Search: ").fg(Color.WHITE).bold(),
-                            text("[ " + searchBuffer + "_ ]").fg(SPRING_GREEN)
-                    )
-            );
+                            text("  Search: ").fg(AppColors.WHITE).bold(),
+                            text("[ " + searchBuffer + "_ ]").fg(AppColors.MAVERICK_GREEN)));
         } else if (config.getSelectedCount() > 0) {
             elements.add(
-                    text("  Press / to search, x to clear all").fg(DIM_GRAY).italic()
-            );
+                    text("  Press / to search, x to clear all").fg(AppColors.DIM_GRAY).italic());
         } else {
             elements.add(
-                    text("  Press / to search dependencies").fg(DIM_GRAY).italic()
-            );
+                    text("  Press / to search dependencies").fg(AppColors.DIM_GRAY).italic());
         }
         elements.add(text(""));
 
@@ -279,8 +321,8 @@ public class MainScreen {
             depTitle += " \u2014 " + dependencyPicker.getActiveCategoryName();
         }
         return panel(depTitle,
-                column(elements.toArray(Element[]::new))
-        ).rounded().borderColor(focusArea == FocusArea.DEPENDENCIES ? BRIGHT_GREEN : DIM_GRAY)
+                column(elements.toArray(Element[]::new))).rounded()
+                .borderColor(focusArea == FocusArea.DEPENDENCIES ? AppColors.BRIGHT_GREEN : AppColors.DIM_GRAY)
                 .fill()
                 .id("dep-picker");
     }
@@ -288,27 +330,25 @@ public class MainScreen {
     private Element renderActionBar() {
         return row(
                 text("  "),
-                text("[ Generate g ]").fg(SPRING_GREEN).bold(),
+                text("[ Generate g ]").fg(AppColors.MAVERICK_GREEN).bold(),
                 text("  "),
-                text("[ Explore e ]").fg(Color.CYAN),
+                text("[ Explore e ]").fg(AppColors.CYAN),
                 text("  "),
-                text("[ Quit q ]").fg(DIM_GRAY),
-                spacer()
-        ).length(1);
+                text("[ Quit q ]").fg(AppColors.DIM_GRAY),
+                spacer()).length(1);
     }
 
     private Element renderFooter() {
         return row(
-                text("  Tab").fg(Color.WHITE), text(":navigate  ").fg(DIM_GRAY),
-                text("/").fg(Color.WHITE), text(":search  ").fg(DIM_GRAY),
-                text("Space").fg(Color.WHITE), text(":toggle  ").fg(DIM_GRAY),
-                text("\u2190\u2192").fg(Color.WHITE), text(":change  ").fg(DIM_GRAY),
-                text("c").fg(Color.WHITE), text(":filter  ").fg(DIM_GRAY),
-                text("x").fg(Color.WHITE), text(":clear  ").fg(DIM_GRAY),
-                text("?").fg(Color.WHITE), text(":help  ").fg(DIM_GRAY),
-                text("q").fg(Color.WHITE), text(":quit").fg(DIM_GRAY),
-                spacer()
-        ).length(1);
+                text("  Tab").fg(AppColors.WHITE), text(":navigate  ").fg(AppColors.DIM_GRAY),
+                text("/").fg(AppColors.WHITE), text(":search  ").fg(AppColors.DIM_GRAY),
+                text("Space").fg(AppColors.WHITE), text(":toggle  ").fg(AppColors.DIM_GRAY),
+                text("\u2190\u2192").fg(AppColors.WHITE), text(":change  ").fg(AppColors.DIM_GRAY),
+                text("c").fg(AppColors.WHITE), text(":filter  ").fg(AppColors.DIM_GRAY),
+                text("x").fg(AppColors.WHITE), text(":clear  ").fg(AppColors.DIM_GRAY),
+                text("?").fg(AppColors.WHITE), text(":help  ").fg(AppColors.DIM_GRAY),
+                text("q").fg(AppColors.WHITE), text(":quit").fg(AppColors.DIM_GRAY),
+                spacer()).length(1);
     }
 
     private static String appVersion() {

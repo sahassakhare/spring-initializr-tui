@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>dev.danvega</groupId>
+    <groupId>org.maverick.devtools</groupId>
     <artifactId>spring-initializr-tui</artifactId>
     <version>0.1.1</version>
     <packaging>jar</packaging>
@@ -18,8 +18,8 @@
         <maven.compiler.release>21</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <tamboui.version>0.2.0-SNAPSHOT</tamboui.version>
-        <jackson.version>3.0.4</jackson.version>
-        <main.class>dev.danvega.initializr.SpringInitializrTui</main.class>
+        <jackson.version>2.17.2</jackson.version>
+        <main.class>org.maverick.devtools.SpringInitializrTui</main.class>
     </properties>
 
     <repositories>
@@ -48,7 +48,7 @@
             <version>${tamboui.version}</version>
         </dependency>
         <dependency>
-            <groupId>tools.jackson.core</groupId>
+            <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>${jackson.version}</version>
         </dependency>

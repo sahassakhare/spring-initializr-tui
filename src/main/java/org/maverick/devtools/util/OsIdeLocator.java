@@ -1,6 +1,6 @@
-package dev.danvega.initializr.util;
+package org.maverick.devtools.util;
 
-import dev.danvega.initializr.util.IdeLauncher.DetectedIde;
+import org.maverick.devtools.util.IdeLauncher.DetectedIde;
 
 import java.io.IOException;
 import java.nio.file.Path;
